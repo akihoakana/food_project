@@ -14,7 +14,6 @@ create table user(
     verify_code varchar(12),
     verify_code_expired timestamp,
     is_active boolean default false,
-    
     primary key(id)
 );
 
@@ -30,6 +29,19 @@ create table user_detail(
     foreign key(id_user) references user(id)
 );
 
+CREATE TABLE IF NOT EXISTS role (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    description VARCHAR(100),
+    PRIMARY KEY (id)
+);
+create table user_role(
+    id_user int,
+    id_role int,
+    primary key(id_user,id_role),
+    foreign key(id_user) references user(id),
+    foreign key(id_role) references role(id)
+);
 create table category(
 	id int auto_increment,
     image text,
@@ -168,22 +180,52 @@ create table cart(
     foreign key(id_order) references t_order(id),
     foreign key(id_food) references food(id)
 );
+INSERT INTO role( name, description ) VALUES ("ADMIN", "Quản trị viên");
+INSERT INTO role( name, description ) VALUES ("MANAGER", "Quản lý");
+INSERT INTO role( name, description ) VALUES ("DEVELOPER", "Lập trình viên");
+INSERT INTO role( name, description ) VALUES ("MEMBER", "Thành viên");
+INSERT INTO role( name, description ) VALUES ("SUPPORTER", "Nhân viên hỗ trợ");
 insert into user (email,password,fullname) values 
 ('abc@gmail.com','$2a$10$2cFa4CPNNWPQoLaQ7uUw3OwfBGUjRNEqsgg1MFutXNbZsR68JOtLK','aaaaaaaaaa')
 ,('bbb@gmail.com','$2a$10$2cFa4CPNNWPQoLaQ7uUw3OwfBGUjRNEqsgg1MFutXNbZsR68JOtLK','bbbbbbbbb')
-,('ddd@gmail.com','$2a$10$2cFa4CPNNWPQoLaQ7uUw3OwfBGUjRNEqsgg1MFutXNbZsR68JOtLK','cccccccc');
+,('ddd@gmail.com','$2a$10$2cFa4CPNNWPQoLaQ7uUw3OwfBGUjRNEqsgg1MFutXNbZsR68JOtLK','ddddđ')
+,('ccc@gmail.com','$2a$10$2cFa4CPNNWPQoLaQ7uUw3OwfBGUjRNEqsgg1MFutXNbZsR68JOtLK','cccccccc');
+insert into user_role values 
+(1,1), (1,2),(1,3),(1,4)
+,(2,2),(2,3),(2,4)
+,(3,3),(3,4)
+,(4,4);
 insert into category values (1,'hinha','cate1'),(2,'hinhb','cate2'),(3,'hinhc','cate3');
 insert into restaurant values (1,'restauranthinha','restaurant1','mainfood1'),(2,'restauranthinhb','restaurant2','mainfood2'),(3,'restauranthinhc','restaurant3','mainfood3');
 insert into material values (1,'material1'),(2,'material2'),(3,'material3'),(4,'material4');
 insert into status values (1,'status1'),(2,'status2'),(3,'status3'),(4,'status4');
 insert into food values (1,'food1','hinha',10,1,2),(2,'food2','hinh2',12,2,3),(3,'food3','hinh3',33,3,1),(4,'food4','hinh4',14,1,1);
-insert into restaurant_review values (1,1,'content1',4),(2,1,'content2',2)
+insert into restaurant_review values 
+(1,1,'content1',4),(2,1,'content2',2)
+-- ,(7,1,'content2',null)
 ,(3,2,'content3',5),(4,2,'content4',2),(5,3,'content5',1),(6,3,'content6',2);
+insert into food_review(id_food,id_user,content,create_date,rate) values 
+(1,1,'content1','1970-01-01 00:00:01',1)
+,(2,2,'content1','1970-01-01 00:00:01',2)
+,(3,3,'content1','1970-01-01 00:00:01',3)
+,(4,4,'content1','1970-01-01 00:00:01',4)
+,(2,1,'content1','1970-01-01 00:00:01',1)
+,(1,2,'content1','1970-01-01 00:00:01',2)
+,(4,3,'content1','1970-01-01 00:00:01',3)
+-- ,(4,3,'content1','1970-01-01 00:00:01',null)
+,(3,4,'content1','1970-01-01 00:00:01',4);
 -- -------------
-insert into t_order values (1,2,'1000-01-01 00:00:00','deliver_address1'),(2,1,'1000-01-01 00:30:00','deliver_address2'),(3,3,'1000-01-01 00:20:00','deliver_address3');
+insert into t_order values (1,2,'1970-01-01 00:00:02','deliver_address1'),(2,1,'1970-01-01 00:30:02','deliver_address2'),(3,3,'1970-01-01 00:20:02','deliver_address3');
 insert into cart values (1,'product1',2,1,12,2),(2,'product2',1,3,14,3),(3,'product3',3,2,12,1);
 SELECT * FROM food_delivery.user;
+SELECT * FROM food_delivery.role;
+SELECT * FROM food_delivery.user_role;
 SELECT * FROM food_delivery.food;
+SELECT * FROM food_delivery.food_review;
 SELECT * FROM food_delivery.restaurant;
 SELECT * FROM food_delivery.category;
 
+SELECT id,firstname, lastname,username,role_id
+FROM users
+left join 
+where users.id=1;
