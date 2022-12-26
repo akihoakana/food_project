@@ -15,12 +15,16 @@ import java.util.Optional;
 @RestController
 @CrossOrigin
 @RequestMapping("/role")
-@PreAuthorize("hasAuthority('MEMBER')")
 public class RoleController {
     @Autowired
     UserRoleRepository userRoleRepository;
     @Autowired
     UserRepository userRepository;
+//    @PostMapping("")
+//    public ResponseEntity<?> findall(){
+//        List<UserEntity> userEntities =userRepository.findAll();
+//        return ResponseEntity.ok().body(userEntities);
+//    }
     @PostMapping("")
     public ResponseEntity<?> findall(){
         List<UserEntity> userEntities =userRepository.findAll();

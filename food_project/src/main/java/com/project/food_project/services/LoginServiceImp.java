@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.management.relation.Role;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -75,13 +76,6 @@ public class LoginServiceImp implements LoginService {
             RoleEntity roleEntity =userRoleEntity.getRoleEntity();
             list.add(roleEntity);
         }
-//        List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>();
-//
-//        for (RoleEntity roleEntity:list){
-//            authList.add(new SimpleGrantedAuthority(roleEntity.getName()));
-//            System.out.println("authList = " + authList);
-//            System.out.println("roleEntity.getName() = " + roleEntity.getName());
-//        }
         return list;
     }
 

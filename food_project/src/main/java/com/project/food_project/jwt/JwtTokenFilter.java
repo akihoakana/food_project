@@ -1,9 +1,7 @@
 package com.project.food_project.jwt;
 
 import com.google.gson.Gson;
-import com.project.food_project.entity.RoleEntity;
 import com.project.food_project.services.LoginService;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,22 +34,32 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         String token = getTokenFromHeader(request);
         if(token != null){
             if(jwtTokenHelper.validaToken(token)){
-                Claims json = jwtTokenHelper.decodeToken(token);
-                Map<String, Object>  map = gson.fromJson(json.getSubject(), Map.class);
+                String json = jwtTokenHelper.decodeToken(token);
+                System.out.println("json = " + json);
+                Map<String, Object> map = gson.fromJson(json, Map.class);
+//                System.out.println("map.get(\"roles\").toString() = " + map.get("roles").toString());
                 if(StringUtils.hasText(map.get("type").toString())
                         && !map.get("type").toString().equals("refesh")){
-                    Collection authorities =
-                            Arrays.stream(json.get("list").toString().split(","))
-                                    .map(SimpleGrantedAuthority::new)
-                                    .collect(Collectors.toList());
+//                        List<SimpleGrantedAuthority> list1 =
+//                                Arrays.stream(map.get("roles").toString().split(",    "))
+//                                        .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+//                    System.out.println("list1 = " + list1);
+                        List<GrantedAuthority> list =new ArrayList<>();
+//                        for (SimpleGrantedAuthority simpleGrantedAuthority:list1)
+//                        {
+//                            list.add(new SimpleGrantedAuthority(simpleGrantedAuthority.getAuthority()));
+//                            System.out.println("simpleGrantedAuthority.getAuthority() = " + simpleGrantedAuthority.getAuthority());
+//                        }
+                        list.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
+                        list.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken
-                            ("","",authorities);
+                            (map.get("username"),"",list);
+                    System.out.println("authenticationToken.getAuthorities() = " + authenticationToken.getAuthorities());
                     SecurityContext securityContext = SecurityContextHolder.getContext();
                     securityContext.setAuthentication(authenticationToken);
                 }
             }
         }
-
         filterChain.doFilter(request,response);
     }
 

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecSecurityConfig {
 
     @Autowired
@@ -48,12 +50,15 @@ public class SecSecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/signin").permitAll()
                 .antMatchers("/signup").permitAll()
+                .antMatchers("/oauth2/**").permitAll()
                 .antMatchers("/signup/**").permitAll()
                 .antMatchers("/refresh-token").permitAll()
                 .antMatchers("/file/**").permitAll()
                 .antMatchers("/logout").permitAll()
                 .antMatchers("/signin/test").authenticated()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and()
+                .oauth2Login().loginPage("/oauth2/login");
 //                .and()
 //                .logout()
 //                .logoutUrl("/logout")
@@ -63,9 +68,7 @@ public class SecSecurityConfig {
 //                        ((request, response, authentication) -> response.setHeader("Authorization",""))
 //                .addLogoutHandler(new HeaderWriterLogoutHandler(
 //                        new ClearSiteDataHeaderWriter(CACHE, COOKIES, STORAGE)));
-//                .and()
-//                .oauth2ResourceServer()
-//                .jwt();
+
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -50,8 +51,8 @@ public class LoginController {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(auth);
         System.out.println("auth.getAuthorities() = " + auth.getAuthorities());
-        String token = jwtTokenHelper.generateToken(request.getEmail(),"authen",auth.getAuthorities(),expiredDate);
-        String refeshToken = jwtTokenHelper.generateToken(request.getEmail(),"refesh",auth.getAuthorities(),refreshExpiredDate);
+        String token = jwtTokenHelper.generateToken(request.getEmail(),"authen", (List) auth.getAuthorities(),expiredDate);
+        String refeshToken = jwtTokenHelper.generateToken(request.getEmail(),"refesh", (List) auth.getAuthorities(),refreshExpiredDate);
         DataTokenResponse dataTokenResponse = new DataTokenResponse();
         dataTokenResponse.setToken(token);
         dataTokenResponse.setRefreshToken(refeshToken);

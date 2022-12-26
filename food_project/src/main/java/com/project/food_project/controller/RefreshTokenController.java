@@ -35,23 +35,23 @@ public class RefreshTokenController {
     public ResponseEntity<?> index(@RequestParam("token") String token){
         DataResponse dataResponse = new DataResponse();
         if(jwtTokenHelper.validaToken(token)){
-            Claims json = jwtTokenHelper.decodeToken(token);
-            Map<String, Object> map = gson.fromJson(json.getSubject(), Map.class);
+            String json = jwtTokenHelper.decodeToken(token);
+            Map<String, Object> map = gson.fromJson(json, Map.class);
             if(StringUtils.hasText(map.get("type").toString())
                     && map.get("type").toString().equals("refesh")){
                 List<GrantedAuthority> list= (List<GrantedAuthority>) map.get("list");
-
-                String tokenAuthen = jwtTokenHelper.generateToken(map.get("username").toString(),"authen",list,expiredDate);
-                String refeshToken = jwtTokenHelper.generateToken(map.get("username").toString(),"refesh",list,refreshExpiredDate);
-
-                DataTokenResponse dataTokenResponse = new DataTokenResponse();
-                dataTokenResponse.setToken(tokenAuthen);
-                dataTokenResponse.setRefreshToken(refeshToken);
-
-                dataResponse.setStatus(HttpStatus.OK.value());
+//
+//                String tokenAuthen = jwtTokenHelper.generateToken(map.get("username").toString(),"authen",list,expiredDate);
+//                String refeshToken = jwtTokenHelper.generateToken(map.get("username").toString(),"refesh",list,refreshExpiredDate);
+//
+//                DataTokenResponse dataTokenResponse = new DataTokenResponse();
+//                dataTokenResponse.setToken(tokenAuthen);
+//                dataTokenResponse.setRefreshToken(refeshToken);
+//
+//                dataResponse.setStatus(HttpStatus.OK.value());
                 dataResponse.setSuccess(true);
                 dataResponse.setDesc("");
-                dataResponse.setData(dataTokenResponse);
+//                dataResponse.setData(dataTokenResponse);
             }
         }else{
             dataResponse.setStatus(HttpStatus.OK.value());

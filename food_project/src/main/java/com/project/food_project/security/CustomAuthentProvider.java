@@ -40,7 +40,6 @@ public class CustomAuthentProvider implements AuthenticationProvider {
                     authList.add(new SimpleGrantedAuthority(roleEntity.getName()));
                 }
                 return new UsernamePasswordAuthenticationToken(userEntity.getEmail(),userEntity.getPassword(),authList);
-//                return new UsernamePasswordAuthenticationToken(userEntity.getEmail(),userEntity.getPassword(),loginService.getRoles(email));
             }else{
                 return null;
             }
