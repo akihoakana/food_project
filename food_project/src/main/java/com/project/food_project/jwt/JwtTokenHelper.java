@@ -5,17 +5,19 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtTokenHelper {
     private final String strKey = "xJHDonkgbMOgIGNodeG7l2kgYuG6o28gbeG6rXQgxJHhuqd5IMSR4bunIDI1NiBiaXQ="; //Chuỗi base 64
     private Gson gson = new Gson();
-    public String generateToken(String data, String type, List list, long expiredDate){
+    public String generateToken(String data, String type, Collection<? extends GrantedAuthority> grantedAuthorities, long expiredDate){
         Date now = new Date();
         Date dateExpired = new Date(now.getTime() + expiredDate);
         SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(strKey));
@@ -23,7 +25,7 @@ public class JwtTokenHelper {
         Map<String, Object> subJectData = new HashMap<>();
         subJectData.put("username",data);
         subJectData.put("type",type);
-        subJectData.put("roles",list.toString());
+        subJectData.put("roles",grantedAuthorities);
         String json = gson.toJson(subJectData);
         return Jwts.builder()
                 .setSubject(json)
@@ -35,8 +37,6 @@ public class JwtTokenHelper {
 
     public String decodeToken(String token){
         SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(strKey));
-        System.out.println("Jwts.parserBuilder().setSigningKey(secretKey).build()\n                .parseClaimsJws(token).getBody().getSubject() = " + Jwts.parserBuilder().setSigningKey(secretKey).build()
-                .parseClaimsJws(token).getBody().getSubject());
         return Jwts.parserBuilder().setSigningKey(secretKey).build()
                 .parseClaimsJws(token).getBody().getSubject();
     }

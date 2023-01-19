@@ -22,7 +22,10 @@ public class RestaurantController {
 
     @Autowired
     private RestaurantServiceImp restaurantServiceImp;
-
+    @GetMapping("/test")
+    public String test(){
+        return "Hello restaurant";
+    }
     @GetMapping("/featured")
     public ResponseEntity<?> getFeaturedRestaurant(){
         List<ResraurantDTO> responseEntities = restaurantServiceImp.getFeaturedRestaurant();

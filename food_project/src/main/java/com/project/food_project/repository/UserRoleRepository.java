@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface UserRoleRepository extends JpaRepository<UserRoleEntity,Integer> {
-    List<UserRoleEntity> findByIdUser(int id);
+//    List<UserRoleEntity> findByIdUser(int id);
 }

@@ -180,11 +180,11 @@ create table cart(
     foreign key(id_order) references t_order(id),
     foreign key(id_food) references food(id)
 );
-INSERT INTO role( name, description ) VALUES ("ADMIN", "Quản trị viên");
-INSERT INTO role( name, description ) VALUES ("MANAGER", "Quản lý");
-INSERT INTO role( name, description ) VALUES ("DEVELOPER", "Lập trình viên");
-INSERT INTO role( name, description ) VALUES ("MEMBER", "Thành viên");
-INSERT INTO role( name, description ) VALUES ("SUPPORTER", "Nhân viên hỗ trợ");
+INSERT INTO role( name, description ) VALUES ("ROLE_ADMIN", "Quản trị viên");
+INSERT INTO role( name, description ) VALUES ("ROLE_MANAGER", "Quản lý");
+INSERT INTO role( name, description ) VALUES ("ROLE_DEVELOPER", "Lập trình viên");
+INSERT INTO role( name, description ) VALUES ("ROLE_MEMBER", "Thành viên");
+INSERT INTO role( name, description ) VALUES ("ROLE_SUPPORTER", "Nhân viên hỗ trợ");
 insert into user (email,password,fullname) values 
 ('abc@gmail.com','$2a$10$2cFa4CPNNWPQoLaQ7uUw3OwfBGUjRNEqsgg1MFutXNbZsR68JOtLK','aaaaaaaaaa')
 ,('bbb@gmail.com','$2a$10$2cFa4CPNNWPQoLaQ7uUw3OwfBGUjRNEqsgg1MFutXNbZsR68JOtLK','bbbbbbbbb')
@@ -217,15 +217,19 @@ insert into food_review(id_food,id_user,content,create_date,rate) values
 -- -------------
 insert into t_order values (1,2,'1970-01-01 00:00:02','deliver_address1'),(2,1,'1970-01-01 00:30:02','deliver_address2'),(3,3,'1970-01-01 00:20:02','deliver_address3');
 insert into cart values (1,'product1',2,1,12,2),(2,'product2',1,3,14,3),(3,'product3',3,2,12,1);
-SELECT * FROM food_delivery.user;
-SELECT * FROM food_delivery.role;
-SELECT * FROM food_delivery.user_role;
-SELECT * FROM food_delivery.food;
-SELECT * FROM food_delivery.food_review;
-SELECT * FROM food_delivery.restaurant;
-SELECT * FROM food_delivery.category;
 
-SELECT id,firstname, lastname,username,role_id
-FROM users
-left join 
-where users.id=1;
+-- SELECT * FROM food_delivery.user;
+-- SELECT * FROM food_delivery.role;
+-- SELECT * FROM food_delivery.user_role;
+-- SELECT * FROM food_delivery.food;
+-- SELECT * FROM food_delivery.food_review;
+-- SELECT * FROM food_delivery.restaurant;
+-- SELECT * FROM food_delivery.category;
+
+-- SELECT u.fullname,role.name
+-- FROM user u
+-- left join user_role as ur
+-- on u.id=ur.id_user
+-- left join role 
+-- on ur.id_role=role.id
+-- where u.id=1;

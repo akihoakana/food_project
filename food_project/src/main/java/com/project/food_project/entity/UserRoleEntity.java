@@ -2,9 +2,11 @@ package com.project.food_project.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.food_project.entity.id.UserRoleId;
+import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
 
+@AllArgsConstructor
 @Entity(name = "user_role")
 @IdClass(UserRoleId.class)
 public class UserRoleEntity {

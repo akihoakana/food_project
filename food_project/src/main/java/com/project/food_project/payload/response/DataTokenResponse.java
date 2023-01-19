@@ -1,5 +1,10 @@
 package com.project.food_project.payload.response;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class DataTokenResponse {
     private String token;
     private String refreshToken;

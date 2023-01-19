@@ -19,7 +19,10 @@ public class CategoryController {
 
     @Autowired
     private CategoryServiceImp categoryServiceImp;
-
+    @GetMapping("/test")
+    public String test(){
+        return "Hello category";
+    }
     @GetMapping("/explorer")
     public ResponseEntity<?> getExplorerCategory(){
         List<CategoryExplorerDTO> categoryEntities = categoryServiceImp.getExplorerCategory();
@@ -33,5 +36,4 @@ public class CategoryController {
     public ResponseEntity<?> getCategoryById(@PathVariable("id") int id){
         return new ResponseEntity<>(categoryServiceImp.getCategoryById(id), HttpStatus.OK);
     }
-
 }

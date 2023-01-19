@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class CustomAuthentProvider implements AuthenticationProvider {
@@ -35,15 +36,13 @@ public class CustomAuthentProvider implements AuthenticationProvider {
         if(userEntity != null){
             boolean isMatchPassword = passwordEncoder.matches(password,userEntity.getPassword());
             if(isMatchPassword){
-                List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>();
-                for (RoleEntity roleEntity:loginService.getRoles(email)){
-                    authList.add(new SimpleGrantedAuthority(roleEntity.getName()));
-                }
+                List<GrantedAuthority> authList = loginService.getRoles(email).stream()
+                        .map(roleEntity -> new SimpleGrantedAuthority(roleEntity.getName()))
+                        .collect(Collectors.toList());
                 return new UsernamePasswordAuthenticationToken(userEntity.getEmail(),userEntity.getPassword(),authList);
             }else{
                 return null;
             }
-
         }else{
             return null;
         }

@@ -5,16 +5,7 @@ spring:
     username: root
     password: 112233
     driver-class-name: com.mysql.cj.jdbc.Driver
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 549499742605-ngmn4lrco7vn3ki796k8psb17vd9qssp.apps.googleusercontent.com
-            client-secret: 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
-#          facebook:
-#            client-id:
-#            client-secret:
+
 
   jpa:
     show-sql: true
@@ -23,11 +14,19 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-id: 549499742605-ngmn4lrco7vn3ki796k8psb17vd9qssp.apps.googleusercontent.com
+#            client-secret: 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
+#
   mail:
     host: smtp.gmail.com
     port: 587
-    username: akihoakana@gmail.com
-    password: mmnxonechcwfyiwh
+    username: demotest1a23456789@gmail.com
+    password: xfoganmrtdjxesny
     properties:
       mail:
         smtp:

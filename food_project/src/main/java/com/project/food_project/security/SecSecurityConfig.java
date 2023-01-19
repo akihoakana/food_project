@@ -2,6 +2,7 @@ package com.project.food_project.security;
 
 import com.project.food_project.jwt.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,8 +11,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -48,17 +52,18 @@ public class SecSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/signin").permitAll()
-                .antMatchers("/signup").permitAll()
-                .antMatchers("/oauth2/**").permitAll()
-                .antMatchers("/signup/**").permitAll()
-                .antMatchers("/refresh-token").permitAll()
-                .antMatchers("/file/**").permitAll()
-                .antMatchers("/logout").permitAll()
-                .antMatchers("/signin/test").authenticated()
+//                .antMatchers("/signin").permitAll()
+//                .antMatchers("/signup").permitAll()
+//                .antMatchers("/oauth2/**").permitAll()
+//                .antMatchers("/signup/**").permitAll()
+//                .antMatchers("/refresh-token").permitAll()
+//                .antMatchers("/file/**").permitAll()
+//                .antMatchers("/logout").permitAll()
+//                .antMatchers("/signin/test").authenticated()
                 .anyRequest().authenticated()
                 .and()
-                .oauth2Login().loginPage("/oauth2/login");
+                .oauth2Login().permitAll()
+                .defaultSuccessUrl("/signin/text");
 //                .and()
 //                .logout()
 //                .logoutUrl("/logout")
@@ -69,9 +74,15 @@ public class SecSecurityConfig {
 //                .addLogoutHandler(new HeaderWriterLogoutHandler(
 //                        new ClearSiteDataHeaderWriter(CACHE, COOKIES, STORAGE)));
 
-        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        return new InMemoryClientRegistrationRepository(CommonOAuth2Provider.GOOGLE.getBuilder("google")
+                .clientId("549499742605-n8hvguefoic2ih90u566vt1qeh97d4fm.apps.googleusercontent.com")
+                .clientSecret("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").build());
     }
 
 }
